@@ -9,5 +9,6 @@
     <string name="short_desc_text">Short Description</string>
     <string name="updated_time_text">06.30pm 17th, Feb</string>
     <string name="search_hint">Search</string>
+    <string name="no_data_match_text">No Match Found</string>
     <string name="long_desc_text">Long Description</string>
 </resources>

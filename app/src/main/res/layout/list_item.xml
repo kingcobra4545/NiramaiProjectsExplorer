@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightLarge">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_data_match_text"
+        android:gravity="center"
+        android:id="@+id/no_data__match_found"
+        android:visibility="gone"
+        tools:text="@string/no_data_match_text"/>
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="70dp"

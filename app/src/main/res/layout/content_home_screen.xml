@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sandeep.prajwal.niramaiprojectsexplorer.HomeScreenActivity"
-    tools:showIn="@layout/activity_home_screen">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_data_match_text"
+        android:gravity="center"
+        android:id="@+id/no_data__match_found"
+        android:visibility="gone" />
+    <android.support.v7.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:id="@+id/search_view"
+        app:searchIcon="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="@string/search_hint"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/list"/>
+        android:id="@+id/list"
+        app:layout_constraintTop_toBottomOf="@+id/search_view"
+        android:layout_gravity=""/>
 
 </android.support.constraint.ConstraintLayout>
+</layout>
