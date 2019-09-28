@@ -1,5 +1,6 @@
 package com.sandeep.prajwal.niramaiprojectsexplorer;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,17 +25,20 @@ import java.util.List;
 
 public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter.ItemListener {
     ActivityHomeScreenBinding binding;
-    BottomSheetBehavior behavior;
+    BottomSheetBehavior behavior, behaviorFilter;
     RecyclerView recyclerViewSortItems;
-    private ItemAdapter mAdapter;
+    private ItemAdapter mAdapter, mAdapterFilter;
     ProjectsListAdapter adapter;
     List<ProjectData> mDataList;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, recyclerViewFilter;
+    Context context;
+    ItemAdapter.ItemListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_home_screen);
-
+        context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home_screen);
         View bottomSheet = binding.bottomSheet;
         behavior = BottomSheetBehavior.from(bottomSheet);
@@ -57,27 +61,40 @@ public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
+        View bottomSheetFilter = binding.bottomSheetFilter;
+        behaviorFilter = BottomSheetBehavior.from(bottomSheetFilter);
+        behaviorFilter.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+        Button filterButton = binding.contentMain.filterButton;
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                behaviorFilter.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
 
         recyclerViewSortItems = binding.recyclerViewSortItems;
+        recyclerViewFilter = binding.recyclerViewFilterItems;
         recyclerViewSortItems.setHasFixedSize(true);
         recyclerViewSortItems.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewFilter.setHasFixedSize(true);
+        recyclerViewFilter.setLayoutManager(new LinearLayoutManager(this));
 
         List<String> items = new ArrayList();
         items.add(Utils.A_Z);
         items.add(Utils.Z_A);
         /*items.add(Utils.low_high);
         items.add(Utils.high_low);*/
-
-
-        mAdapter = new ItemAdapter(this, items, this);
-        recyclerViewSortItems.setAdapter(mAdapter);
-
-        /*ProjectData[] myListData = new ProjectData[] {
-                new ProjectData("Project1","Short Description1",
-                        "Long Description1", "6.30pm "),
-                new ProjectData("Project2","Short Description2",
-                        "Long Description2", "9.30pm ")
-        };*/
         mDataList = new ArrayList<>();
         mDataList.add(new ProjectData("bProject1","Short Description1",
                 "Long Description1", 1569617330000l, "Cisco"));
@@ -91,14 +108,21 @@ public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter
                 "Long Description1", 1569677130000l, "IBM"));
         mDataList.add(new ProjectData("bbaProject2","Short Description2",
                 "Long Description2", 1569677430000l, "ACCENTURE"));
+        final List<String> listOfFilterItems = new ArrayList<>();
+        for (ProjectData unitData: mDataList) {
+            if(!listOfFilterItems.contains(unitData.getCompanyName()))
+                listOfFilterItems.add(unitData.getCompanyName());
+        }
 
-        /*Collections.sort(mDataList, new Comparator<ProjectData>() {
-            @Override
-            public int compare(ProjectData lhs, ProjectData rhs) {
-                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-                return lhs.getTitle().compareTo(rhs.getTitle());
-            }
-        });*/
+
+
+        mAdapter = new ItemAdapter(this, items, this, Utils.SORT);
+        mAdapterFilter = new ItemAdapter(this, listOfFilterItems, this, Utils.FILTER);
+        recyclerViewSortItems.setAdapter(mAdapter);
+        recyclerViewFilter.setAdapter(mAdapterFilter);
+
+
+
 
         recyclerView = (RecyclerView) binding.contentMain.list;
         adapter = new ProjectsListAdapter(mDataList);
@@ -130,8 +154,32 @@ public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter
                 binding.contentMain.searchView.setIconified(false);
             }
         });
-
+        final List<ProjectData> filteredList = new ArrayList<>();
+        binding.applyFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (ProjectData unitData:
+                     mDataList) {
+                    if(PreferencesDB.getString(context,Utils.CURRENT_FILTER).contains(unitData.getCompanyName()))
+                        filteredList.add(unitData);
+                }
+                adapter = new ProjectsListAdapter(filteredList);
+                recyclerView.setAdapter(adapter);
+                behaviorFilter.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+        binding.clearFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter = new ProjectsListAdapter(mDataList);
+                recyclerView.setAdapter(adapter);
+                mAdapterFilter = new ItemAdapter(context, listOfFilterItems, listener, Utils.FILTER);
+                recyclerViewFilter.setAdapter(mAdapterFilter);
+                behaviorFilter.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
     }
+
     @Override
     public void onItemClick(String item) {
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -190,5 +238,19 @@ public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter
 
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFilterItemClick(String item) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(behaviorFilter.getState()==BottomSheetBehavior.STATE_EXPANDED) {
+            behaviorFilter.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+        else super.onBackPressed();
     }
 }

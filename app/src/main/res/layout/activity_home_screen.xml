@@ -41,6 +41,53 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        android:id="@+id/bottom_sheet_filter"
+        android:background="@android:color/white"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Filter By"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewFilterItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/clear_filter"
+                android:layout_weight="1"
+                android:text="Clear"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/apply_filter"
+                android:layout_weight="1"
+                android:text="Apply"/>
+        </LinearLayout>
+            <!--android:foreground="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"-->
+    </LinearLayout>
 
         <!--<android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -116,7 +163,7 @@
                 />
         </android.support.constraint.ConstraintLayout>
 -->
-    </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
 </layout>

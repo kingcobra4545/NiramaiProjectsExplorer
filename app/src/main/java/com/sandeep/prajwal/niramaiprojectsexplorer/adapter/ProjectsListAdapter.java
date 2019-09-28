@@ -30,6 +30,7 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
 
     List<ProjectData> listdata;
     ValueFilter valueFilter;
+//    ValueFilterForFilter valueFilterForFilter;
     List<ProjectData> mStringFilterList;
     ActivityHomeScreenBinding binding;
 
@@ -74,6 +75,14 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
         return valueFilter;
     }
 
+
+    /*public Filter getFilterForFilter() {
+        if (valueFilterForFilter == null) {
+            valueFilterForFilter = new ValueFilterForFilter();
+        }
+        return valueFilterForFilter;
+    }*/
+
     private class ValueFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -105,6 +114,38 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
             notifyDataSetChanged();
         }
     }
+
+   /* private class ValueFilterForFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+
+            if (constraint != null && constraint.length() > 0) {
+                List<ProjectData> filterList = new ArrayList<>();
+                for (int i = 0; i < mStringFilterList.size(); i++) {
+                    if ((mStringFilterList.get(i).getCompanyName().toUpperCase()).equals(constraint.toString().toUpperCase())) {
+                        filterList.add(mStringFilterList.get(i));
+                    }
+                }
+                results.count = filterList.size();
+                results.values = filterList;
+            } else {
+                results.count = mStringFilterList.size();
+                results.values = mStringFilterList;
+            }
+            return results;
+
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+
+            listdata = (List<ProjectData>) results.values;
+            notifyDataSetChanged();
+        }
+    }*/
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
