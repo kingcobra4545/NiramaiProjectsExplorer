@@ -14,6 +14,7 @@ import com.sandeep.prajwal.niramaiprojectsexplorer.PreferencesDB;
 import com.sandeep.prajwal.niramaiprojectsexplorer.R;
 import com.sandeep.prajwal.niramaiprojectsexplorer.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
@@ -22,12 +23,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     private ItemListener mListener;
     private String type;
     private Context context;
+    List<String> listOfFilterItems;
 
     public ItemAdapter(Context context, List<String> items, ItemListener listener, String type) {
         this.context = context;
         mItems = items;
         mListener = listener;
         this.type = type;
+        listOfFilterItems =  new ArrayList<>();
     }
 
 
@@ -101,15 +104,24 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            String newFilterText = "";
-            if (mListener != null) {
+            if(mListener!=null){
+                if(b)
+                    listOfFilterItems.add(item);
+                else if(listOfFilterItems.contains(item))
+                        listOfFilterItems.remove(item);
+                mListener.onFilterItemClick(listOfFilterItems);
+            }
+
+
+
+           /* if (mListener != null) {
                 String oldFilterText = PreferencesDB.getString(context, Utils.CURRENT_FILTER);
                 if(!oldFilterText.equals(""))  newFilterText = oldFilterText +"," +  item;
                 else newFilterText = item;
-                PreferencesDB.putString(context, Utils.CURRENT_SORT,  newFilterText);
+                PreferencesDB.putString(context, Utils.CURRENT_FILTER,  newFilterText);
 //                notifyDataSetChanged();
                 mListener.onFilterItemClick(newFilterText);
-            }
+            }*/
 //
 
         }
@@ -117,6 +129,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public interface ItemListener {
         void onItemClick(String item);
-        void onFilterItemClick(String item);
+        void onFilterItemClick(List<String> listOfFilterItems);
     }
 }

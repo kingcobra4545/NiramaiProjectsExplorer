@@ -10,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -33,12 +34,14 @@ public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter
     RecyclerView recyclerView, recyclerViewFilter;
     Context context;
     ItemAdapter.ItemListener listener;
+    List<String> listOfSelectedFilterItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_home_screen);
         context = this;
+        listOfSelectedFilterItems = new ArrayList<>();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home_screen);
         View bottomSheet = binding.bottomSheet;
         behavior = BottomSheetBehavior.from(bottomSheet);
@@ -158,9 +161,23 @@ public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter
         binding.applyFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                filteredList.clear();
+                Log.i(Utils.PRAJWAL, "listOfSelectedFilterItems.size()-->  " + listOfSelectedFilterItems.size());
+                if(listOfSelectedFilterItems.size()==0) {
+                    adapter = new ProjectsListAdapter(mDataList);
+                    recyclerView.setAdapter(adapter);
+                    behaviorFilter.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    return;
+                }
                 for (ProjectData unitData:
                      mDataList) {
-                    if(PreferencesDB.getString(context,Utils.CURRENT_FILTER).contains(unitData.getCompanyName()))
+                    Log.i(Utils.PRAJWAL, " List of Selected filter items --> " );
+                    for (String s:
+                         listOfSelectedFilterItems) {
+                        Log.i(Utils.PRAJWAL, " " + s );
+                    }
+//                    if(PreferencesDB.getString(context,Utils.CURRENT_FILTER).contains(unitData.getCompanyName()) && !filteredList.contains(unitData))
+                    if(listOfSelectedFilterItems.contains(unitData.getCompanyName()) && !filteredList.contains(unitData))
                         filteredList.add(unitData);
                 }
                 adapter = new ProjectsListAdapter(filteredList);
@@ -176,6 +193,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter
                 mAdapterFilter = new ItemAdapter(context, listOfFilterItems, listener, Utils.FILTER);
                 recyclerViewFilter.setAdapter(mAdapterFilter);
                 behaviorFilter.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                listOfSelectedFilterItems.clear();
             }
         });
     }
@@ -240,9 +258,10 @@ public class HomeScreenActivity extends AppCompatActivity implements ItemAdapter
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onFilterItemClick(String item) {
 
+    @Override
+    public void onFilterItemClick(List<String> items) {
+        listOfSelectedFilterItems = items;
     }
 
     @Override
