@@ -2,6 +2,7 @@ package com.sandeep.prajwal.niramaiprojectsexplorer.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sandeep.prajwal.niramaiprojectsexplorer.R;
+import com.sandeep.prajwal.niramaiprojectsexplorer.Utils;
 import com.sandeep.prajwal.niramaiprojectsexplorer.databinding.ActivityHomeScreenBinding;
 import com.sandeep.prajwal.niramaiprojectsexplorer.model.ProjectData;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,8 +50,15 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
     @Override
     public void onBindViewHolder(ProjectsListAdapter.ViewHolder holder, int position) {
         holder.title_text_view.setText(listdata.get(position).getTitle());
+        holder.companyName.setText(listdata.get(position).getCompanyName());
+
         holder.shortDesc.setText(listdata.get(position).getShortDesc());
-        holder.timeCreated.setText(listdata.get(position).getTimeCreated());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        holder.timeCreated.setText(format.format(new Date(listdata.get(position).getTimeCreated())));
+        for (ProjectData data:
+             listdata) {
+            Log.i(Utils.PRAJWAL, " Data received by adapter - > " + data.getTitle());
+        }
     }
 
     @Override
@@ -97,13 +108,13 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
-        private TextView title_text_view, shortDesc,timeCreated, noDataMatchFound;
+        private TextView title_text_view, shortDesc,timeCreated, companyName;
         private RelativeLayout relativeLayout;
         private ViewHolder(View itemView) {
             super(itemView);
             this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
             this.title_text_view = (TextView) itemView.findViewById(R.id.title_text_view);
-            this.noDataMatchFound = (TextView) itemView.findViewById(R.id.no_data__match_found);
+            this.companyName = (TextView) itemView.findViewById(R.id.company_name);
             this.shortDesc = (TextView) itemView.findViewById(R.id.short_desc);
             this.timeCreated = (TextView) itemView.findViewById(R.id.created_time);
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);

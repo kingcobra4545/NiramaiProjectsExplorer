@@ -4,20 +4,21 @@ package com.sandeep.prajwal.niramaiprojectsexplorer.model;
  * Created by KingCobra on 27/09/19.
  */
 
-public class ProjectData {
+public class ProjectData  {
 
 
 
     String shortDesc;
     String longDesc;
     String title;
-    String timeCreated;
+    Long timeCreated;
 
-    public ProjectData(String title, String shortDesc, String longDesc,  String timeCreated){
+    public ProjectData(String title, String shortDesc, String longDesc,  Long timeCreated, String companyName){
         this.shortDesc = shortDesc;
         this.longDesc = longDesc;
         this.title = title;
         this.timeCreated = timeCreated;
+        this.companyName = companyName;
     }
 
     public int getPosition() {
@@ -54,21 +55,21 @@ public class ProjectData {
         this.title = title;
     }
 
-    public String getTimeCreated() {
+    public Long getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(String timeCreated) {
+    public void setTimeCreated(Long timeCreated) {
         this.timeCreated = timeCreated;
     }
 
-    public String getTimeUpdated() {
-        return timeUpdated;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setTimeUpdated(String timeUpdated) {
-        this.timeUpdated = timeUpdated;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    String timeUpdated;
+    String companyName;
 }

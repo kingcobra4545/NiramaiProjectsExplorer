@@ -9,6 +9,11 @@
     <string name="short_desc_text">Short Description</string>
     <string name="updated_time_text">06.30pm 17th, Feb</string>
     <string name="search_hint">Search</string>
+    <string name="a_z">A-Z</string>
+    <string name="z_a">Z-A</string>
+    <string name="cost_low_high">Cost em dash Low to High</string>
+    <string name="cost_high_low">Cost em dash High to Low</string>
     <string name="no_data_match_text">No Match Found</string>
     <string name="long_desc_text">Long Description</string>
+    <string name="company_name">Company Name</string>
 </resources>
