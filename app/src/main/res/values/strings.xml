@@ -7,6 +7,10 @@
     <string name="title_activity_home_screen">HomeScreenActivity</string>
     <string name="title_text">Title</string>
     <string name="short_desc_text">Short Description</string>
+    <string name="short_desc_label">Short Description: </string>
+    <string name="created_time_label">Created Time:</string>
+    <string name="long_desc_label">Long Description: </string>
+    <string name="submit">Submit</string>
     <string name="updated_time_text">06.30pm 17th, Feb</string>
     <string name="search_hint">Search</string>
     <string name="a_z">A-Z</string>
@@ -16,4 +20,5 @@
     <string name="no_data_match_text">No Match Found</string>
     <string name="long_desc_text">Long Description</string>
     <string name="company_name">Company Name</string>
+    <string name="title_activity_project_details">ProjectDetailsActivity</string>
 </resources>

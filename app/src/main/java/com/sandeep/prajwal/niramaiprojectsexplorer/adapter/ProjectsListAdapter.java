@@ -33,10 +33,12 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
 //    ValueFilterForFilter valueFilterForFilter;
     List<ProjectData> mStringFilterList;
     ActivityHomeScreenBinding binding;
+    private final OnItemClickListener listener;
 
-    public ProjectsListAdapter(List<ProjectData> listdata) {
+    public ProjectsListAdapter(List<ProjectData> listdata, OnItemClickListener listener) {
         this.listdata = listdata;
         this.mStringFilterList = listdata;
+        this.listener = listener;
     }
     View listItem;
     @Override
@@ -60,6 +62,8 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
              listdata) {
             Log.i(Utils.PRAJWAL, " Data received by adapter - > " + data.getTitle());
         }
+
+        holder.bind(listdata.get(position), listener);
     }
 
     @Override
@@ -76,12 +80,6 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
     }
 
 
-    /*public Filter getFilterForFilter() {
-        if (valueFilterForFilter == null) {
-            valueFilterForFilter = new ValueFilterForFilter();
-        }
-        return valueFilterForFilter;
-    }*/
 
     private class ValueFilter extends Filter {
         @Override
@@ -115,37 +113,7 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
         }
     }
 
-   /* private class ValueFilterForFilter extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
 
-            if (constraint != null && constraint.length() > 0) {
-                List<ProjectData> filterList = new ArrayList<>();
-                for (int i = 0; i < mStringFilterList.size(); i++) {
-                    if ((mStringFilterList.get(i).getCompanyName().toUpperCase()).equals(constraint.toString().toUpperCase())) {
-                        filterList.add(mStringFilterList.get(i));
-                    }
-                }
-                results.count = filterList.size();
-                results.values = filterList;
-            } else {
-                results.count = mStringFilterList.size();
-                results.values = mStringFilterList;
-            }
-            return results;
-
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        protected void publishResults(CharSequence constraint,
-                                      FilterResults results) {
-
-            listdata = (List<ProjectData>) results.values;
-            notifyDataSetChanged();
-        }
-    }*/
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
@@ -160,5 +128,16 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
             this.timeCreated = (TextView) itemView.findViewById(R.id.created_time);
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
         }
+        public  void bind(final ProjectData item, final OnItemClickListener listener){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
+    }
+    public interface OnItemClickListener {
+        void onItemClick(ProjectData item);
     }
 }
