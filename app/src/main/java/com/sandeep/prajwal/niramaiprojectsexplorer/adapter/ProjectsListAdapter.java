@@ -54,6 +54,7 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
     public void onBindViewHolder(ProjectsListAdapter.ViewHolder holder, int position) {
         holder.title_text_view.setText(listdata.get(position).getTitle());
         holder.companyName.setText(listdata.get(position).getCompanyName());
+        holder.imageView.setImageResource(R.drawable.download);
 
         holder.shortDesc.setText(listdata.get(position).getShortDesc());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
