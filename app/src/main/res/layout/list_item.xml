@@ -37,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:maxLines="2"
         android:textColor="@color/title_color"
         tools:text="@string/submit_text"/>
     <TextView
@@ -44,6 +45,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/short_desc"
         android:textSize="13sp"
+        android:maxLines="1"
         tools:text="@string/short_desc_text" />
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
